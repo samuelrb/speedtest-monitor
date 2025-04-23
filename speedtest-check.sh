@@ -1,8 +1,10 @@
 #!/bin/bash
 
-MIN_DOWNLOAD=${MIN_DOWNLOAD:-50}
-MIN_UPLOAD=${MIN_UPLOAD:-20}
+MIN_DOWNLOAD=${MIN_DOWNLOAD:-200}
+MIN_UPLOAD=${MIN_UPLOAD:-200}
 SERVER_ID=${SERVER_ID:-}
+
+echo "Run speedtest with threshold download $MIN_DOWNLOAD upload $MIN_UPLOAD and server $SERVER_ID"
 
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
