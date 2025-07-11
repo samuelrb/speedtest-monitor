@@ -8,7 +8,8 @@ MIN_DOWNLOAD=${MIN_DOWNLOAD:-200}
 MIN_UPLOAD=${MIN_UPLOAD:-200}
 SERVER_ID=${SERVER_ID:-}
 
-DATE=$(date '+%Y-%m-%d %H:%M:%S')
+DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
 
 CMD="speedtest --accept-license --accept-gdpr --format=json"
 if [[ -n "${SERVER_ID}" ]]; then
