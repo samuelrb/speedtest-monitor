@@ -13,4 +13,7 @@ COPY crontab.txt /etc/cron.d/speedtest-cron
 RUN chmod +x /usr/local/bin/speedtest-check.sh && \
     crontab /etc/cron.d/speedtest-cron
 
-CMD ["cron", "-f"]
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+
+CMD ["/init.sh"]
