@@ -1,0 +1,35 @@
+name: Check Docker tag availability
+
+on:
+  pull_request:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Read version from version.txt
+      id: read_version
+      run: |
+        VERSION=$(cat version.txt)
+        echo "Version from file: ${VERSION}"
+        echo "VERSION=${VERSION}" >> ${GITHUB_OUTPUT}
+
+    - name: Check if Docker tag already exists
+      run: |
+        VERSION=${{ steps.read_version.outputs.VERSION }}
+        IMAGE="${{ secrets.DOCKER_USERNAME }}/speedtest-monitor"
+
+        echo "🔍 Checking if Docker tag '${VERSION}' exists on Docker Hub..."
+
+        STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+          "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${VERSION}/")
+
+        if [ "$STATUS_CODE" = "200" ]; then
+          echo "❌ Docker tag '${VERSION}' already exists on Docker Hub!"
+          exit 1
+        else
+          echo "✅ Docker tag '${VERSION}' does not exist yet."
+        fi
