@@ -8,10 +8,9 @@ RUN apt-get update && \
 
 
 COPY speedtest-check.sh /usr/local/bin/speedtest-check.sh
-COPY crontab.txt /etc/cron.d/speedtest-cron
+COPY crontab.txt /usr/local/etc/templates/crontab.txt
 
-RUN chmod +x /usr/local/bin/speedtest-check.sh && \
-    crontab /etc/cron.d/speedtest-cron
+RUN chmod +x /usr/local/bin/speedtest-check.sh
 
 COPY init.sh /init.sh
 RUN chmod +x /init.sh

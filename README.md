@@ -33,6 +33,7 @@ docker run -d \
   -e SERVER_ID=12345 \
   -e TELEGRAM_BOT_TOKEN="1234567:AABCC123_asdfjnnASDF" \
   -e TELEGRAM_CHAT_ID="12345667" \
+  -e CRON_SCHEDULE="* * * * *" \
   --restart=always \
   --name speedtest-monitor \
   speedtest-monitor
@@ -75,6 +76,7 @@ To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `
 | `SERVER_ID` | Optional Speedtest server ID to use.   | Auto    |
 | `TELEGRAM_BOT_TOKEN`  | Your Telegram bot's token              | void |
 | `TELEGRAM_CHAT_ID`    | Your personal chat ID or group chat ID | void |
+| `CRON_SCHEDULE`      | The cron expression to schedule script | 0 * * * * |
 
 Find server IDs by running:
 ```bash
