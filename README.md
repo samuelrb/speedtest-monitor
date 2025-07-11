@@ -10,6 +10,7 @@ A Docker container that monitors your internet connection speed (download and up
 - Checks download and upload speeds (in Mbps)
 - Logs results to stdout (visible via `docker logs`)
 - Alerts when speed drops below defined thresholds
+- Telegram notifications
 
 ---
 
@@ -19,17 +20,19 @@ A Docker container that monitors your internet connection speed (download and up
 ```bash
 docker build -t speedtest-monitor .
 ```
-### Run simple
+### Run simple (without telegram notifications)
 ```bash
 docker run -d --restart=always --name speedtest-monitor speedtest-monitor
 ```
-### Run with options
+### Run with options all options (remove unused options)
 
 ```bash
 docker run -d \
   -e MIN_DOWNLOAD=1000 \ 
   -e MIN_UPLOAD=1000 \ 
-  -e SERVER_ID=12345 \ 
+  -e SERVER_ID=12345 \
+  -e TELEGRAM_BOT_TOKEN="1234567:AABCC123_asdfjnnASDF" \
+  -e TELEGRAM_CHAT_ID="12345667" \
   --restart=always \
   --name speedtest-monitor \
   speedtest-monitor
@@ -48,16 +51,30 @@ View logs with:
 ```bash
 docker logs -f speedtest-monitor
 ```
+### 📣 Telegram Alerts
 
+You can receive speed alerts via Telegram if the measured download or upload speeds fall below the configured thresholds.
+
+To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID.
+
+#### 📤 Example Telegram message
+
+![Telegram Alert Screenshot](docs/telegram-alert.png)
+
+> This message is sent when the measured speed is below the configured limits.
+
+> The alert message includes current download/upload speeds and a link to the full Speedtest result.
 
 
 ### ⚙️ Environment Variables
 
 | Variable | Description                            | Default |
 |---------|----------------------------------------|---------|
-| MIN_DOWNLOAD | Minimum download speed threshold (Mbps) | 200     |
-| MIN_UPLOAD | Minimum upload speed threshold (Mbps)  | 200     |
-| SERVER_ID | Optional Speedtest server ID to use.   | Auto    |
+| `MIN_DOWNLOAD` | Minimum download speed threshold (Mbps) | 200     |
+| `MIN_UPLOAD` | Minimum upload speed threshold (Mbps)  | 200     |
+| `SERVER_ID` | Optional Speedtest server ID to use.   | Auto    |
+| `TELEGRAM_BOT_TOKEN`  | Your Telegram bot's token              | void |
+| `TELEGRAM_CHAT_ID`    | Your personal chat ID or group chat ID | void |
 
 Find server IDs by running:
 ```bash

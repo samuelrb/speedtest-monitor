@@ -1,4 +1,4 @@
-name: Build and Push Docker image
+name: Build and Push Multi-Arch Docker image
 
 on:
   push:
@@ -22,10 +22,10 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/speedtest-monitor:latest .
-
-    - name: Push Docker image
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/speedtest-monitor:latest
+    - name: Build and push Docker image (multi-arch)
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/speedtest-monitor:latest
