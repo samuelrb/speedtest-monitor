@@ -32,7 +32,7 @@ jobs:
     - name: Build and push Docker image (multi-arch)
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: docker
         platforms: linux/amd64,linux/arm64
         push: true
         cache-from: type=gha

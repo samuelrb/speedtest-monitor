@@ -60,7 +60,7 @@ To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `
 
 #### 📤 Example Telegram message
 
-![Telegram Alert Screenshot](docs/telegram-alert.png)
+![Telegram Alert Screenshot](docs/images/telegram-alert.png)
 
 > This message is sent when the measured speed is below the configured limits.
 

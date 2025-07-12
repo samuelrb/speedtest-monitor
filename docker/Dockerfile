@@ -7,12 +7,12 @@ RUN apt-get update && \
     apt-get clean
 
 
-COPY speedtest-check.sh /usr/local/bin/speedtest-check.sh
-COPY crontab.txt /usr/local/etc/templates/crontab.txt
+COPY scripts/speedtest-check.sh /usr/local/bin/speedtest-check.sh
+COPY scripts/crontab /usr/local/etc/templates/crontab
 
 RUN chmod +x /usr/local/bin/speedtest-check.sh
 
-COPY init.sh /init.sh
+COPY scripts/init.sh /init.sh
 RUN chmod +x /init.sh
 
 CMD ["/init.sh"]

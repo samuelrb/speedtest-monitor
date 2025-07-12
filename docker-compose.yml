@@ -1,0 +1,11 @@
+services:
+  speedtest-monitor:
+    image: samuelrb/speedtest-monitor:latest
+    container_name: speedtest-monitor
+    environment:
+      CRON_SCHEDULE: "30 * * * *"
+      MIN_DOWNLOAD: 270
+      MIN_UPLOAD: 260
+      TELEGRAM_BOT_TOKEN: ""
+      TELEGRAM_CHAT_ID: ""
+    restart: unless-stopped
