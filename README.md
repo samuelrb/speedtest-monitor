@@ -65,10 +65,10 @@ docker run -d \
 ### Output
 The container logs output to stdout:
 
-```yaml
-2025-04-23 16:14:22 - Result: {"type":"result","ping":{"jitter":0.392,"latency":16.106,"low":15.971,"high":16.716},"download":{"bandwidth":38449715,"bytes":304397280,"elapsed":8002,"latency":{"iqm":33.063,"low":16.268,"high":67.449,"jitter":3.069}},"upload":{"bandwidth":38688161,"bytes":389129091,"elapsed":10314,"latency":{"iqm":51.215,"low":17.163,"high":143.069,"jitter":5.956}},...}
-2025-04-23 16:14:22 - Download: 307.59772000000000000000 Mbps, Upload: 309.50528800000000000000 Mbps
-2025-04-23 16:14:22 - ⚠️ Warning: low speed (Download: 307.59772000000000000000, Upload: 309.50528800000000000000) threshold (Download: 1000, Upload: 200)
+```json
+{"timestamp":"2025-07-12T18:29:24Z","level":"info","message":"Result: {"type":"result","timestamp":"2025-07-12T18:29:24Z","ping":{"jitter":0.229,"latency":15.910,"low":15.705,"high":16.054},"download":{"bandwidth":38081009,"bytes":326945024,"elapsed":8611, ...}"}
+{"timestamp":"2025-07-12T18:29:24Z","level":"info","message":"Download: 304.64 Mbps, Upload: 309.94 Mbps"}
+{"timestamp":"2025-07-12T18:29:24Z","level":"info","message":"⚠️ Warning: low speed (Download: 304.64, Upload: 309.94) threshold (Download: 500, Upload: 200)"}
 ```
 
 View logs with:
