@@ -16,27 +16,50 @@ A Docker container that monitors your internet connection speed (download and up
 
 ## 🐳 Usage
 
+### 🚀 Quickstart (Docker run)
+
+#### 🔹 Using Docker Run
+
+Run the container directly from Docker Hub with scheduled checks and environment configuration:
+
+```bash
+docker run -d \
+  --name speedtest-monitor \
+  -e CRON_SCHEDULE="30 * * * *" \
+  -e MIN_DOWNLOAD=270 \
+  -e MIN_UPLOAD=260 \
+  -e TELEGRAM_BOT_TOKEN="" \
+  -e TELEGRAM_CHAT_ID="" \
+  --restart unless-stopped \
+  samuelrb/speedtest-monitor:latest
+```
+
+#### 🔹 Using Docker Compose
+```bash
+docker compose up -d
+```
+
 ### Build
 ```bash
-docker build -t speedtest-monitor .
+docker build -t speedtest-monitor docker
 ```
 ### Run simple (without telegram notifications)
 ```bash
-docker run -d --restart=always --name speedtest-monitor speedtest-monitor
+docker run -d --restart=always --name speedtest-monitor samuelrb/speedtest-monitor
 ```
 ### Run with options all options (remove unused options)
 
 ```bash
 docker run -d \
-  -e MIN_DOWNLOAD=1000 \ 
-  -e MIN_UPLOAD=1000 \ 
+  -e MIN_DOWNLOAD=1000 \
+  -e MIN_UPLOAD=1000 \
   -e SERVER_ID=12345 \
   -e TELEGRAM_BOT_TOKEN="1234567:AABCC123_asdfjnnASDF" \
   -e TELEGRAM_CHAT_ID="12345667" \
   -e CRON_SCHEDULE="* * * * *" \
   --restart=always \
   --name speedtest-monitor \
-  speedtest-monitor
+  samuelrb/speedtest-monitor
 ```
 
 ### Output
@@ -56,7 +79,7 @@ docker logs -f speedtest-monitor
 
 You can receive speed alerts via Telegram if the measured download or upload speeds fall below the configured thresholds.
 
-To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID.
+To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
 
 #### 📤 Example Telegram message
 
@@ -70,10 +93,10 @@ To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `
 ### ⚙️ Environment Variables
 
 | Variable | Description                            | Default |
-|---------|----------------------------------------|---------|
-| `MIN_DOWNLOAD` | Minimum download speed threshold (Mbps) | 200     |
-| `MIN_UPLOAD` | Minimum upload speed threshold (Mbps)  | 200     |
-| `SERVER_ID` | Optional Speedtest server ID to use.   | Auto    |
+|---------|----------------------------------------|------|
+| `MIN_DOWNLOAD` | Minimum download speed threshold (Mbps) | 200  |
+| `MIN_UPLOAD` | Minimum upload speed threshold (Mbps)  | 200  |
+| `SERVER_ID` | Optional Speedtest server ID to use.   | Auto |
 | `TELEGRAM_BOT_TOKEN`  | Your Telegram bot's token              | void |
 | `TELEGRAM_CHAT_ID`    | Your personal chat ID or group chat ID | void |
 | `CRON_SCHEDULE`      | The cron expression to schedule script | 0 * * * * |
@@ -89,6 +112,28 @@ By default, Speedtest runs every hour. You can modify the schedule by editing th
 # Run every hour
 0 * * * * /usr/local/bin/speedtest-check.sh >> /proc/1/fd/1 2>&1
 ```
+
+## 🔹 Using Host Cron (ephemeral container)
+This method allows the container to run only when scheduled by the host system. Ideal for minimizing resource usage.
+
+Create a cron job on your machine (host) with the following line:
+
+```bash
+0 * * * * docker run -d --rm \
+  -e MIN_DOWNLOAD=270 \
+  -e MIN_UPLOAD=260 \
+  -e TELEGRAM_BOT_TOKEN="your_bot_token" \
+  -e TELEGRAM_CHAT_ID="your_chat_id" \
+  samuelrb/speedtest-monitor:latest /usr/local/bin/speedtest-check.sh
+```
+
+Save it with `crontab -e`
+
+No `CRON_SCHEDULE` is needed, since the scheduling is external.
+
+This overrides the default CMD and directly executes the check script.
+
+✅ This is the most lightweight approach — Docker runs only during the test, then shuts down.
 
 ## 🧪 Tests (Optional)
 To validate the container before publishing, you can test the script with:

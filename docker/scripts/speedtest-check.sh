@@ -1,10 +1,17 @@
 #!/bin/bash
 set -e
-set -x
 
 set -a
 [ -f /etc/environment ] && . /etc/environment
 set +a
+
+echo_log() {
+  local level="${2:-info}"
+  local timestamp
+  timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+  echo "{\"timestamp\":\"$timestamp\",\"level\":\"$level\",\"message\":\"$1\"}"
+}
 
 MIN_DOWNLOAD=${MIN_DOWNLOAD:-200}
 MIN_UPLOAD=${MIN_UPLOAD:-200}
@@ -25,12 +32,12 @@ RESULT_URL=$(echo "${RESULT}" | jq -r '.result.url')
 DOWNLOAD_MBPS=$(echo "scale=2; ${DOWNLOAD_BPS} * 8 / 1000000" | bc -l)
 UPLOAD_MBPS=$(echo "scale=2; ${UPLOAD_BPS} * 8 / 1000000" | bc -l)
 
-echo "${DATE} - Result: ${RESULT}"
-echo "${DATE} - Download: ${DOWNLOAD_MBPS} Mbps, Upload: ${UPLOAD_MBPS} Mbps"
+echo_log "Result: ${RESULT}"
+echo_log "Download: ${DOWNLOAD_MBPS} Mbps, Upload: ${UPLOAD_MBPS} Mbps"
 
 if (( $(echo "${DOWNLOAD_MBPS} < ${MIN_DOWNLOAD}" | bc -l) )) || \
    (( $(echo "${UPLOAD_MBPS} < ${MIN_UPLOAD}" | bc -l) )); then
-  echo "${DATE} - ⚠️ Warning: low speed (Download: ${DOWNLOAD_MBPS}, Upload: ${UPLOAD_MBPS})
+  echo_log "⚠️ Warning: low speed (Download: ${DOWNLOAD_MBPS}, Upload: ${UPLOAD_MBPS})
   threshold (Download: ${MIN_DOWNLOAD}, Upload: ${MIN_UPLOAD})"
   if [[ -n "${TELEGRAM_BOT_TOKEN}" && -n "${TELEGRAM_CHAT_ID}" ]]; then
     ALERT_MSG=$(cat <<EOF

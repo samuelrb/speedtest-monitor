@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 
 export CRON_SCHEDULE=${CRON_SCHEDULE:-"0 * * * *"}
 
