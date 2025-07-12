@@ -22,12 +22,20 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Set version tag
+    - name: Get version
       id: version
       run: |
         VERSION=$(cat version.txt)
         echo "Version from file: ${VERSION}"
         echo "VERSION=${VERSION}" >> ${GITHUB_OUTPUT}
+
+    - name: Fail if tag already exists
+      run: |
+        TAG="v${{ steps.version.outputs.version }}"
+        if git ls-remote --tags origin "refs/tags/$TAG" | grep "$TAG" > /dev/null; then
+          echo "❌ Tag $TAG already exists. Aborting."
+          exit 1
+        fi
 
     - name: Build and push Docker image (multi-arch)
       uses: docker/build-push-action@v5
@@ -40,3 +48,10 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/speedtest-monitor:latest
           ${{ secrets.DOCKER_USERNAME }}/speedtest-monitor:${{ steps.version.outputs.VERSION }}
+
+    - name: Create tag if it doesn't exist
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git tag "v${{ steps.version.outputs.version }}"
+        git push origin "v${{ steps.version.outputs.version }}"    
