@@ -38,7 +38,6 @@ docker run -d \
 ```bash
 docker compose up -d
 ```
-
 ### Build
 ```bash
 docker build -t speedtest-monitor docker
@@ -60,6 +59,39 @@ docker run -d \
   --restart=always \
   --name speedtest-monitor \
   samuelrb/speedtest-monitor
+```
+
+#### 🔹 Using Makefile
+
+This Makefile prompts for any empty environment variables in docker-compose.yml, updates them with your input or defaults, and then starts the Docker containers.
+Run the following command in your terminal.
+
+```bash
+make
+```
+
+### Stops and removes the app container
+
+```bash
+make down
+```
+
+### Deletes the app’s Docker image
+
+```bash
+make clean
+```
+
+### Stops the app container and deletes its Docker image
+
+```bash
+make fclean
+```
+
+### Stops the app container, deletes its Docker image and rebuild everything from scratch
+
+```bash
+make re
 ```
 
 ### Output
