@@ -51,8 +51,14 @@ if (( $(echo "${DOWNLOAD_MBPS} < ${MIN_DOWNLOAD}" | bc -l) )) || \
 🔗 [View full result](${RESULT_URL})
 EOF
 )
+    THREAD_PARAM=()
+    if [ -n "${TELEGRAM_THREAD_ID}" ]; then
+      THREAD_PARAM=(-d message_thread_id="${TELEGRAM_THREAD_ID}")
+    fi
+
     curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
       -d chat_id="${TELEGRAM_CHAT_ID}" \
+      "${THREAD_PARAM[@]}" \
       -d text="${ALERT_MSG}" \
       -d parse_mode="Markdown"
   fi

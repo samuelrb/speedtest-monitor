@@ -41,7 +41,7 @@ docker compose up -d
 
 ### Build
 ```bash
-docker build -t speedtest-monitor docker
+docker build -t speedtest-monitor -f docker/Dockerfile .
 ```
 ### Run simple (without telegram notifications)
 ```bash
@@ -99,6 +99,7 @@ To enable this feature, set the environment variables `TELEGRAM_BOT_TOKEN` and `
 | `SERVER_ID` | Optional Speedtest server ID to use.   | Auto |
 | `TELEGRAM_BOT_TOKEN`  | Your Telegram bot's token              | void |
 | `TELEGRAM_CHAT_ID`    | Your personal chat ID or group chat ID | void |
+| `TELEGRAM_THREAD_ID`  | Optional Telegram forum topic thread ID | void |
 | `CRON_SCHEDULE`      | The cron expression to schedule script | 0 * * * * |
 
 Find server IDs by running:

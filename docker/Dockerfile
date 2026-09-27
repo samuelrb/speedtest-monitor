@@ -7,12 +7,13 @@ RUN apt-get update && \
     apt-get clean
 
 
-COPY scripts/speedtest-check.sh /usr/local/bin/speedtest-check.sh
-COPY scripts/crontab /usr/local/etc/templates/crontab
+COPY docker/scripts/speedtest-check.sh /usr/local/bin/speedtest-check.sh
+COPY docker/scripts/crontab /usr/local/etc/templates/crontab
 
 RUN chmod +x /usr/local/bin/speedtest-check.sh
 
-COPY scripts/init.sh /init.sh
+COPY docker/scripts/init.sh /init.sh
+COPY version.txt /version.txt
 RUN chmod +x /init.sh
 
 CMD ["/init.sh"]
