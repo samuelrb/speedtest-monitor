@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm-slim
 
 RUN apt-get update && \
     apt-get install -y curl gnupg1 bc mailutils cron jq tar ca-certificates && \
